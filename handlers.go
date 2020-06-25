@@ -10,7 +10,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func (env *Env) surveyresulthandler(w http.ResponseWriter, r *http.Request) {
+func (env *Env) surveyResultHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, http.StatusText(405), 405)
 		return
@@ -33,7 +33,7 @@ func (env *Env) surveyresulthandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", data)
 }
 
-func (env *Env) getquestionjsonhandler(w http.ResponseWriter, r *http.Request) {
+func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "GET" {
 		http.Error(w, http.StatusText(405), 405)
 		return
@@ -63,7 +63,7 @@ func (env *Env) getquestionjsonhandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", data)
 }
 
-func (env *Env) savesurveyhandler(w http.ResponseWriter, r *http.Request) {
+func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(405), 405)
 		return
@@ -111,7 +111,7 @@ func (env *Env) savesurveyhandler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "%s", data)
 }
 
-func (env *Env) savesurveyfeedback(w http.ResponseWriter, r *http.Request) {
+func (env *Env) saveSurveyFeedBack(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(405), 405)
 		return

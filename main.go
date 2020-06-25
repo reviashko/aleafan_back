@@ -29,10 +29,10 @@ func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/getquestionjson/{id}", env.getquestionjsonhandler).Methods("GET")
-	router.HandleFunc("/surveyresult/{id}", env.surveyresulthandler).Methods("GET")
-	router.HandleFunc("/savesurveyfeedback/", env.savesurveyfeedback).Methods("POST")
-	router.HandleFunc("/savesurvey/", env.savesurveyhandler).Methods("POST")
+	router.HandleFunc("/getquestionjson/{id}", env.getQuestionJSONHandler).Methods("GET")
+	router.HandleFunc("/surveyresult/{id}", env.surveyResultHandler).Methods("GET")
+	router.HandleFunc("/savesurveyfeedback/", env.saveSurveyFeedBack).Methods("POST")
+	router.HandleFunc("/savesurvey/", env.saveSurveyHandler).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8080", router))
 }

@@ -21,13 +21,13 @@ func (db *DB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error) {
 	var errorCode pq.ErrorCode
 
 	rows, err := db.Queryx("select afanasiev_type, ps_descr, ps_name, afanasiev_feedback from testing.employee_getresult($1)", employeeid)
+	defer rows.Close()
 	if err != nil {
 		if err, ok := err.(*pq.Error); ok {
 			errorCode = err.Code
 		}
 		return "", errorCode, err
 	}
-	defer rows.Close()
 
 	for rows.Next() {
 		err := rows.StructScan(&surveyResult)
@@ -48,10 +48,10 @@ func (db *DB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error) {
 func (db *DB) SaveSurveyFeedBack(employeeid int, surveyfeedback int) error {
 
 	rows, err := db.Queryx("select * from testing.feedback_save($1, $2)", employeeid, surveyfeedback)
+	defer rows.Close()
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
 
 	return nil
 }
