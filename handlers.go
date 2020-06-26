@@ -23,14 +23,20 @@ func (env *Env) surveyResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, _, err := env.db.GetSurveyResult(employeeid)
+	surveyResult, _, err := env.db.GetSurveyResult(employeeid)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	resultjson, err := json.Marshal(surveyResult)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", data)
+	fmt.Fprintf(w, "%s", resultjson)
 }
 
 func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
@@ -46,21 +52,37 @@ func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, errorCode, err := env.db.GetQuestionsJSON(employeeid)
-	if err != nil {
-		if errorCode == "22024" { //answered earlyer
-			//http.Error(w, http.StatusText(301), 301)
+	questionList, errorCode, err := env.db.GetQuestions(employeeid)
+	if err != nil && errorCode != "22024" {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
 
-			data, _, _ = env.db.GetSurveyResult(employeeid)
+	returnJSON, _ := json.Marshal("{}")
 
-		} else {
+	if errorCode == "22024" { //answered earlyer
+		surveyResult, _, err := env.db.GetSurveyResult(employeeid)
+		if err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+
+		returnJSON, err = json.Marshal(surveyResult)
+		if err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+
+	} else {
+		returnJSON, err = json.Marshal(questionList)
+		if err != nil {
 			http.Error(w, http.StatusText(500), 500)
 			return
 		}
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", data)
+	fmt.Fprintf(w, "%s", returnJSON)
 }
 
 func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
@@ -101,14 +123,20 @@ func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	data, _, err := env.db.GetSurveyResult(p.UserID)
+	surveyResult, _, err := env.db.GetSurveyResult(p.UserID)
+	if err != nil {
+		http.Error(w, http.StatusText(500), 500)
+		return
+	}
+
+	returnJSON, err := json.Marshal(surveyResult)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", data)
+	fmt.Fprintf(w, "%s", returnJSON)
 }
 
 func (env *Env) saveSurveyFeedBack(w http.ResponseWriter, r *http.Request) {

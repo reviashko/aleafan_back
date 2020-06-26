@@ -1,7 +1,7 @@
 package models
 
 import (
-	"encoding/json"
+
 	//"fmt"
 
 	"github.com/lib/pq"
@@ -11,22 +11,6 @@ import (
 type Question struct {
 	QuestionID   int    `json:"qst_id" db:"qst_id"`
 	QuestionText string `json:"qst_text" db:"qst_text"`
-}
-
-// GetQuestionsJSON method
-func (db *DB) GetQuestionsJSON(employeeid int) (string, pq.ErrorCode, error) {
-
-	questionList, errorCode, err := db.GetQuestions(employeeid)
-	if err != nil {
-		return "", errorCode, err
-	}
-
-	e, err := json.Marshal(questionList)
-	if err != nil {
-		return "", errorCode, err
-	}
-
-	return string(e), errorCode, nil
 }
 
 // GetQuestions method

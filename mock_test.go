@@ -33,7 +33,7 @@ func (mdb *mockDB) GetQuestionsJSON(employeeid int) (string, pq.ErrorCode, error
 	return string(e), erroCode, nil
 }
 
-func (mdb *mockDB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error) {
+func (mdb *mockDB) GetSurveyResult(employeeid int) (*models.SurveyResult, pq.ErrorCode, error) {
 
 	//models.SurveyResult
 	surveyResult := new(models.SurveyResult)
@@ -42,12 +42,7 @@ func (mdb *mockDB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error)
 	surveyResult.FeedBackExists = true
 	surveyResult.TypeName = "VLFE"
 
-	resultjson, err := json.Marshal(surveyResult)
-	if err != nil {
-		return "", "", err
-	}
-
-	return string(resultjson), "", nil
+	return surveyResult, "", nil
 }
 
 func (mdb *mockDB) SaveAnswers(employeeid int, answers string) (pq.ErrorCode, error) {
@@ -67,7 +62,7 @@ func TestGetQuestionsJSON(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/books", nil)
 
 	env := Env{db: &mockDB{}}
-	http.HandlerFunc(env.getquestionjsonhandler).ServeHTTP(rec, req)
+	http.HandlerFunc(env.getQuestionJSONHandler).ServeHTTP(rec, req)
 
 	expected := `[{"qst_id":35,"qst_text":"Вы всегда контролируете свое поведение?"},{"qst_id":27,"qst_text":"Можно ли Вас назвать гурманом?"}]`
 	if expected != rec.Body.String() {

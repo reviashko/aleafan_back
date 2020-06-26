@@ -1,8 +1,6 @@
 package models
 
 import (
-	"encoding/json"
-
 	"github.com/lib/pq"
 )
 
@@ -15,7 +13,7 @@ type SurveyResult struct {
 }
 
 // GetSurveyResult method
-func (db *DB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error) {
+func (db *DB) GetSurveyResult(employeeid int) (*SurveyResult, pq.ErrorCode, error) {
 
 	surveyResult := new(SurveyResult)
 	var errorCode pq.ErrorCode
@@ -26,22 +24,17 @@ func (db *DB) GetSurveyResult(employeeid int) (string, pq.ErrorCode, error) {
 		if err, ok := err.(*pq.Error); ok {
 			errorCode = err.Code
 		}
-		return "", errorCode, err
+		return surveyResult, errorCode, err
 	}
 
 	for rows.Next() {
 		err := rows.StructScan(&surveyResult)
 		if err != nil {
-			return "", errorCode, err
+			return surveyResult, errorCode, err
 		}
 	}
 
-	resultjson, err := json.Marshal(surveyResult)
-	if err != nil {
-		return "", errorCode, err
-	}
-
-	return string(resultjson), errorCode, nil
+	return surveyResult, errorCode, nil
 }
 
 // SaveSurveyFeedBack method
