@@ -29,14 +29,14 @@ func (env *Env) surveyResultHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	resultjson, err := json.Marshal(surveyResult)
+	returnJSON, err := json.Marshal(surveyResult)
 	if err != nil {
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
-	fmt.Fprintf(w, "%s", resultjson)
+	fmt.Fprintf(w, "%s", returnJSON)
 }
 
 func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
