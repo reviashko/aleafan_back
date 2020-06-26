@@ -58,7 +58,7 @@ func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	returnJSON, _ := json.Marshal("{}")
+	returnJSON := make([]byte, 0)
 
 	if errorCode == "22024" { //answered earlyer
 		surveyResult, _, err := env.db.GetSurveyResult(employeeid)
