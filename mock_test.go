@@ -1,12 +1,13 @@
 package main
 
 import (
-	"aleafan/models"
 	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/reviashko/aleafan_back/models"
 
 	"github.com/lib/pq"
 )

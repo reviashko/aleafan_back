@@ -1,9 +1,10 @@
 package main
 
 import (
-	"aleafan/models"
 	"log"
 	"net/http"
+
+	"github.com/reviashko/aleafan_back/models"
 
 	"github.com/gorilla/mux"
 	"github.com/tkanos/gonfig"

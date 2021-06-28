@@ -21,7 +21,7 @@ type ConnectionData struct {
 
 //ToString funct
 func (c *ConnectionData) ToString() string {
-	return fmt.Sprintf("host=%s port=%v dbname=%s user=%s password=%s", c.Host, strconv.Itoa(c.Port), c.Dbname, c.User, c.Password)
+	return fmt.Sprintf("host=%s port=%v dbname=%s user=%s password=%s sslmode=disable", c.Host, strconv.Itoa(c.Port), c.Dbname, c.User, c.Password)
 }
 
 //Datastore interface
