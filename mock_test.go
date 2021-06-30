@@ -14,7 +14,7 @@ import (
 
 type mockDB struct{}
 
-func (mdb *mockDB) GetQuestions(employeeid int) ([]*models.Question, pq.ErrorCode, error) {
+func (mdb *mockDB) GetQuestions(employeeid string) ([]*models.Question, pq.ErrorCode, error) {
 	questionList := make([]*models.Question, 0)
 	questionList = append(questionList, &models.Question{QuestionID: 35, QuestionText: "Вы всегда контролируете свое поведение?"})
 	questionList = append(questionList, &models.Question{QuestionID: 27, QuestionText: "Можно ли Вас назвать гурманом?"})
@@ -22,7 +22,7 @@ func (mdb *mockDB) GetQuestions(employeeid int) ([]*models.Question, pq.ErrorCod
 	return questionList, "", nil
 }
 
-func (mdb *mockDB) GetQuestionsJSON(employeeid int) (string, pq.ErrorCode, error) {
+func (mdb *mockDB) GetQuestionsJSON(employeeid string) (string, pq.ErrorCode, error) {
 
 	questionList, erroCode, err := mdb.GetQuestions(employeeid)
 
@@ -40,19 +40,19 @@ func (mdb *mockDB) GetSurveyResult(employeeid string) (*models.SurveyResult, pq.
 	surveyResult := new(models.SurveyResult)
 	surveyResult.AfanasievType = "Lenin"
 	surveyResult.Descr = "123"
-	surveyResult.FeedBackExists = true
+	surveyResult.FeedBackExists = 50
 	surveyResult.TypeName = "VLFE"
 
 	return surveyResult, "", nil
 }
 
-func (mdb *mockDB) SaveAnswers(employeeid int, answers string) (pq.ErrorCode, error) {
+func (mdb *mockDB) SaveAnswers(employeeid string, answers string) (pq.ErrorCode, error) {
 	//TODO make real save
 	return "", nil
 }
 
 // SaveSurveyFeedBack method
-func (mdb *mockDB) SaveSurveyFeedBack(employeeid int, surveyfeedback int) error {
+func (mdb *mockDB) SaveSurveyFeedBack(employeeid string, surveyfeedback int) error {
 
 	return nil
 }
