@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
@@ -17,11 +17,14 @@ func (env *Env) surveyResultHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	employeeid, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
+	employeeid := vars["id"]
+	/*
+		employeeid, err := strconv.Atoi(vars["id"])
+		if err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+	*/
 
 	surveyResult, _, err := env.db.GetSurveyResult(employeeid)
 	if err != nil {
@@ -46,14 +49,18 @@ func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	vars := mux.Vars(r)
-	employeeid, err := strconv.Atoi(vars["id"])
-	if err != nil {
-		http.Error(w, http.StatusText(500), 500)
-		return
-	}
+	employeeid := vars["id"]
+	/*
+		employeeid, err := strconv.Atoi(vars["id"])
+		if err != nil {
+			http.Error(w, http.StatusText(500), 500)
+			return
+		}
+	*/
 
 	questionList, errorCode, err := env.db.GetQuestions(employeeid)
 	if err != nil && errorCode != "22024" {
+		log.Println("GetQuestions fault")
 		http.Error(w, http.StatusText(500), 500)
 		return
 	}
@@ -86,6 +93,9 @@ func (env *Env) getQuestionJSONHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(405), 405)
 		return
@@ -106,7 +116,7 @@ func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
 
 	type Poll struct {
 		Answers []Answer `json:"answers"`
-		UserID  int      `json:"userid"`
+		UserID  string   `json:"userid"`
 	}
 
 	var p Poll
@@ -135,11 +145,13 @@ func (env *Env) saveSurveyHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, "%s", returnJSON)
 }
 
 func (env *Env) saveSurveyFeedBack(w http.ResponseWriter, r *http.Request) {
+
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	if r.Method != "POST" {
 		http.Error(w, http.StatusText(405), 405)
 		return
@@ -154,8 +166,8 @@ func (env *Env) saveSurveyFeedBack(w http.ResponseWriter, r *http.Request) {
 	bodyString := string(body)
 
 	type FeedBackAnswer struct {
-		Answer int `json:"answer"`
-		UserID int `json:"userid"`
+		Answer int    `json:"answer"`
+		UserID string `json:"userid"`
 	}
 
 	var fba FeedBackAnswer
@@ -171,6 +183,5 @@ func (env *Env) saveSurveyFeedBack(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Header().Set("Access-Control-Allow-Origin", "*")
 	fmt.Fprintf(w, "%s", "{'result':'ok'}")
 }

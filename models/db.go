@@ -26,10 +26,10 @@ func (c *ConnectionData) ToString() string {
 
 //Datastore interface
 type Datastore interface {
-	GetQuestions(int) ([]*Question, pq.ErrorCode, error)
-	SaveAnswers(int, string) (pq.ErrorCode, error)
-	SaveSurveyFeedBack(int, int) error
-	GetSurveyResult(int) (*SurveyResult, pq.ErrorCode, error)
+	GetQuestions(string) ([]*Question, pq.ErrorCode, error)
+	SaveAnswers(string, string) (pq.ErrorCode, error)
+	SaveSurveyFeedBack(string, int) error
+	GetSurveyResult(string) (*SurveyResult, pq.ErrorCode, error)
 }
 
 //DB struct

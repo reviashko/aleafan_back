@@ -34,7 +34,7 @@ func (mdb *mockDB) GetQuestionsJSON(employeeid int) (string, pq.ErrorCode, error
 	return string(e), erroCode, nil
 }
 
-func (mdb *mockDB) GetSurveyResult(employeeid int) (*models.SurveyResult, pq.ErrorCode, error) {
+func (mdb *mockDB) GetSurveyResult(employeeid string) (*models.SurveyResult, pq.ErrorCode, error) {
 
 	//models.SurveyResult
 	surveyResult := new(models.SurveyResult)
